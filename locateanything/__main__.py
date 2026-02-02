@@ -1,0 +1,1 @@
+from locateanything.cli import main\nimport sys\nsys.exit(main())\n

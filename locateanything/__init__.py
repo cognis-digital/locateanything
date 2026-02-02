@@ -1,0 +1,1 @@
+from locateanything.core import locate, TOOL_NAME, TOOL_VERSION\n

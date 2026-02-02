@@ -1,0 +1,1 @@
+# Demo\n\nRun `locate sample.jpg` with the fleet vision+reasoning slots up.\n
