@@ -44,7 +44,7 @@ For OSINT, journalism, and research. **Get consent** before geolocating images o
 property, and comply with local law. You are responsible for your use.
 
 ## Related
-[🤖 uncensored-fleet](https://github.com/cognis-digital/uncensored-fleet) · [🧠 hermes](https://github.com/cognis-digital/hermes) · [🔍 geolens](https://github.com/cognis-digital/geolens) · [🗂️ the suite](https://github.com/cognis-digital/cognis-neural-suite)
+[🤖 uncensored-fleet](https://github.com/cognis-digital/uncensored-fleet) · [🧠 engram](https://github.com/cognis-digital/engram) · [🔍 geolens](https://github.com/cognis-digital/geolens) · [🗂️ the suite](https://github.com/cognis-digital/cognis-neural-suite)
 
 > ### ⭐ If this is cool, star it — it helps others find it.
 
