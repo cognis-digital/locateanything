@@ -72,5 +72,11 @@ property, and comply with local law. You are responsible for your use.
 
 > ### ⭐ If this is cool, star it — it helps others find it.
 
+## Interoperability
+
+`{}` composes with the 300+ tool Cognis suite — JSON in/out and a shared
+OpenAI-compatible `/v1` backbone. See **[INTEROP.md](INTEROP.md)** for the
+suite map, composition patterns, and reference stacks.
+
 ## License
 COCL v1.0 — see [LICENSE](LICENSE).
