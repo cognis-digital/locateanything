@@ -24,6 +24,12 @@ locate photo.jpg               # → ranked candidates + rationale
 locate photo.jpg --format json
 ```
 
+<!-- cognis:layman:start -->
+## What is this?
+
+locateanything is a command-line tool that figures out where a photo was taken. You point it at any image file, and it reads location data embedded in the photo and examines visual clues like road signs, building styles, and vegetation to give you a ranked list of likely locations. It runs entirely on your own computer — nothing is uploaded anywhere and no account or API key is needed. It is aimed at journalists, researchers, and OSINT analysts who need to verify or trace the origin of images.
+<!-- cognis:layman:end -->
+
 ## Architecture
 
 ```mermaid
@@ -44,6 +50,42 @@ For OSINT, journalism, and research. **Get consent** before geolocating images o
 property, and comply with local law. You are responsible for your use.
 
 <a name="verification"></a>
+<!-- cognis:install:start -->
+## Install
+
+`locateanything` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/locateanything/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/locateanything/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/locateanything.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/locateanything.git"  # uv
+pip install "git+https://github.com/cognis-digital/locateanything.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/locateanything.git
+cd locateanything && pip install .
+```
+
+Then run:
+```sh
+locate --help
+```
+<!-- cognis:install:end -->
+
 ## Verification
 
 [![tests](https://img.shields.io/badge/tests-1%20passing-2ea44f.svg)](AUDIT.md)
