@@ -24,6 +24,30 @@ locate photo.jpg               # → ranked candidates + rationale
 locate photo.jpg --format json
 ```
 
+## Usage — step by step
+
+1. Install the CLI (console-script: `locate`):
+   ```bash
+   pipx install "git+https://github.com/cognis-digital/locateanything.git"
+   locate --version
+   ```
+2. Infer where a photo was taken (runs entirely on a local vision + reasoning model):
+   ```bash
+   locate ./photo.jpg
+   ```
+3. Get machine-readable output for pipelines or evidence logs:
+   ```bash
+   locate ./photo.jpg --format json > location.json
+   ```
+4. Read the result — parse the JSON for the inferred location and rationale:
+   ```bash
+   jq '.' location.json
+   ```
+5. In CI/batch, loop over a folder of images and collect findings:
+   ```bash
+   for f in images/*.jpg; do locate "$f" --format json; done > all_locations.jsonl
+   ```
+
 ## Architecture
 
 ```mermaid
