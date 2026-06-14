@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "cognis-locateanything"
-version = "0.1.0"
+version = "0.1.1"
 description = "Infer where a photo was taken using a local uncensored VL + reasoning model"
 authors = [{name = "Cognis Digital", email = "suite@cognis.digital"}]
 license = {text = "LicenseRef-COCL-1.0"}
@@ -11,6 +11,7 @@ requires-python = ">=3.10"
 readme = "README.md"
 classifiers = ["Development Status :: 4 - Beta", "License :: Other/Proprietary License"]
 [project.optional-dependencies]
+connect = ["cognis-connect @ git+https://github.com/cognis-digital/cognis-connect.git"]
 mcp = ["mcp>=1.0"]
 img = ["Pillow>=10"]
 dev = ["pytest>=8.0"]
@@ -18,6 +19,7 @@ dev = ["pytest>=8.0"]
 Homepage = "https://cognis.digital"
 Repository = "https://github.com/cognis-digital/locateanything"
 [project.scripts]
+"locateanything-emit" = "locateanything.connect:emit_main"
 locate = "locateanything.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["locateanything"]
