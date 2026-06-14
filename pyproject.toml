@@ -23,3 +23,6 @@ Repository = "https://github.com/cognis-digital/locateanything"
 locate = "locateanything.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["locateanything"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
