@@ -5,7 +5,11 @@ Reads JSON findings on stdin and POSTs them to a URL (SIEM/Slack/Jira bridge).
 Usage:  <tool> scan . --format json | python integrations/webhook.py --url URL
 """
 from __future__ import annotations
-import argparse, sys, urllib.request
+
+import argparse
+import sys
+import urllib.request
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -25,6 +29,7 @@ def main() -> int:
     except Exception as e:
         print(f"webhook error: {e}", file=sys.stderr)
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
