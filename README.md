@@ -22,7 +22,18 @@ pip install "cognis-locateanything[img]"
 fleet up vision reasoning      # via https://github.com/cognis-digital/uncensored-fleet
 locate photo.jpg               # → ranked candidates + rationale
 locate photo.jpg --format json
+locate photo.jpg --exif-only --format geojson   # offline EXIF fix, straight onto a map
 ```
+
+### Output formats
+| `--format` | use |
+|---|---|
+| `table` (default) | human-readable ranked candidates |
+| `json` | machine-readable, for pipelines / evidence logs |
+| `geojson` | RFC 7946 `FeatureCollection` — open in QGIS, Leaflet, Mapbox, [geojson.io](https://geojson.io) |
+
+`--exif-only` is a deterministic, **offline, model-free** run that uses only the
+embedded EXIF GPS fix — ideal for CI, batch triage, or air-gapped review.
 
 ## Usage — step by step
 
@@ -48,6 +59,24 @@ locate photo.jpg --format json
    for f in images/*.jpg; do locate "$f" --format json; done > all_locations.jsonl
    ```
 
+## Demos
+Worked, runnable scenarios live in [`demos/`](demos/) — each has a `SCENARIO.md` and,
+where relevant, a sample image carrying a real public landmark coordinate in EXIF so you
+can run it end-to-end offline with `--exif-only`. (Re)generate the sample images with
+`python scripts/make_demo_images.py`.
+
+| # | Scenario |
+|---|---|
+| [01](demos/01-basic) | Basic run — full VL + reasoning |
+| [02](demos/02-exif-gps-landmark) | EXIF GPS fix, offline (no models needed) |
+| [03](demos/03-batch-folder) | Batch a folder into JSONL |
+| [04](demos/04-geojson-map) | GeoJSON export → drop straight onto a map |
+| [05](demos/05-southern-western) | Southern + Western hemisphere (sign handling) |
+| [06](demos/06-disaster-response) | Disaster-response / situational awareness |
+| [07](demos/07-maritime-port) | Maritime / port geolocation (suite interop) |
+| [08](demos/08-evidence-chain) | Evidence chain + forward to STIX/MISP/Slack |
+| [09](demos/09-visual-clues-only) | No EXIF → visual-clue inference |
+
 ## Architecture
 
 ```mermaid
@@ -56,7 +85,7 @@ flowchart LR
   IMG --> VL[Uncensored VL model<br/>visual clues]
   EXIF --> R[Reasoning model<br/>rank candidates]
   VL --> R
-  R --> OUT[Ranked locations + rationale<br/>table / JSON / MCP]
+  R --> OUT[Ranked locations + rationale<br/>table / JSON / GeoJSON / MCP]
 ```
 
 ## Use it from any AI stack

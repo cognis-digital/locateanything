@@ -62,11 +62,22 @@ def reason_locate(clues: str, gps=None) -> list:
     except Exception:
         return [Candidate("see-model-output", 0.0, out[:300])]
 
-def locate(path: str) -> dict:
+def locate(path: str, exif_only: bool = False) -> dict:
+    """Infer where ``path`` was taken.
+
+    Always parses EXIF GPS locally (no network). When ``exif_only`` is False it
+    additionally queries the local VL + reasoning models for visual-clue ranking.
+    Set ``exif_only=True`` for a deterministic, offline, model-free run that uses
+    only embedded metadata — useful in CI, batch triage, or air-gapped review.
+    """
     gps = exif_gps(path)
     result = {"tool": TOOL_NAME, "image": path, "exif_gps": gps, "candidates": []}
     if gps:
         result["candidates"].append(asdict(Candidate(f"EXIF GPS {gps[0]:.4f},{gps[1]:.4f}", 0.99, "embedded GPS metadata")))
+    if exif_only:
+        if not gps:
+            result["note"] = "exif-only mode: no EXIF GPS embedded in this image."
+        return result
     try:
         clues = vl_describe(path)
         result["clues"] = clues
@@ -74,3 +85,44 @@ def locate(path: str) -> dict:
     except Exception as e:
         result["note"] = f"VL/reasoning models unreachable ({e}). Start uncensored-fleet: `fleet up vision reasoning`."
     return result
+
+
+def to_geojson(result: dict) -> dict:
+    """Render a :func:`locate` result as a standard GeoJSON FeatureCollection.
+
+    Interoperates with QGIS, Leaflet, Mapbox, geojson.io and any GIS pipeline.
+    Each EXIF-GPS fix becomes a Point feature; visual-clue candidates (which have
+    no coordinates) are carried as properties on a metadata feature so nothing is
+    lost when piping into a map. Coordinate order is [lon, lat] per RFC 7946.
+    """
+    features = []
+    gps = result.get("exif_gps")
+    if gps:
+        lat, lon = gps
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [round(lon, 6), round(lat, 6)]},
+            "properties": {
+                "source": "exif_gps",
+                "tool": result.get("tool", TOOL_NAME),
+                "image": result.get("image", ""),
+                "confidence": 0.99,
+                "rationale": "embedded GPS metadata",
+            },
+        })
+    # carry non-georeferenced visual candidates so the map keeps full context
+    inferred = [c for c in result.get("candidates", []) if not str(c.get("place", "")).startswith("EXIF GPS")]
+    if inferred or not features:
+        features.append({
+            "type": "Feature",
+            "geometry": None,
+            "properties": {
+                "source": "visual_inference",
+                "tool": result.get("tool", TOOL_NAME),
+                "image": result.get("image", ""),
+                "candidates": inferred,
+                "clues": result.get("clues", ""),
+                "note": result.get("note", ""),
+            },
+        })
+    return {"type": "FeatureCollection", "features": features}
