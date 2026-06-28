@@ -1,0 +1,16 @@
+$ locateanything-emit --help
+
+usage: locate [-h] [--version] [--format {table,json,geojson}] [--exif-only]
+              image
+
+Infer where a photo was taken (local VL + reasoning model).
+
+positional arguments:
+  image                 path to an image
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json,geojson}
+  --exif-only           offline, deterministic: use only embedded EXIF GPS,
+                        skip the VL/reasoning models

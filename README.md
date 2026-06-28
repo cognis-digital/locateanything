@@ -35,6 +35,66 @@ locate photo.jpg --exif-only --format geojson   # offline EXIF fix, straight ont
 `--exif-only` is a deterministic, **offline, model-free** run that uses only the
 embedded EXIF GPS fix — ideal for CI, batch triage, or air-gapped review.
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ locateanything-emit --version
+locateanything 0.1.0
+```
+
+```console
+$ locateanything-emit --help
+usage: locate [-h] [--version] [--format {table,json,geojson}] [--exif-only]
+              image
+
+Infer where a photo was taken (local VL + reasoning model).
+
+positional arguments:
+  image                 path to an image
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json,geojson}
+  --exif-only           offline, deterministic: use only embedded EXIF GPS,
+                        skip the VL/reasoning models
+```
+
+> Blocks above are real `locateanything` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Activity Detected",
+        "description": "An unknown actor has been observed attempting to access a sensitive system.",
+        "created_at": "2023-02-15T14:30:00Z",
+        "updated_at": "2023-02-15T14:30:00Z",
+        "labels": ["suspicious", "malware"],
+        "indicators": [
+            {
+                "type": "ip",
+                "value": "192.0.2.1"
+            },
+            {
+                "type": "domain",
+                "value": "example.com"
+            }
+        ]
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. Install the CLI (console-script: `locate`):

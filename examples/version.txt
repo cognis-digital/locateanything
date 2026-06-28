@@ -1,0 +1,3 @@
+$ locateanything-emit --version
+
+locateanything 0.1.0
